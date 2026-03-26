@@ -37,6 +37,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 Team 06: W02 Assignment: Team Project
 
-Bruce Melendez Lozano
-Nilber Moreira Mota
+Bruce Melendez Lozano,
+Nilber Moreira Mota,
 Eric Ferreira
