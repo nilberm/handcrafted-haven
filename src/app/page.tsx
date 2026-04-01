@@ -22,7 +22,7 @@ export default function Home() {
               Support independent artisans and find one-of-a-kind items made with passion and precision.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
-              <button className="px-10 py-4 bg-[#375e21] text-white font-bold rounded-lg hover:bg-[#2d4f1b] transition-all shadow-lg hover:translate-y-[-2px] active:scale-95">
+              <button className="px-10 py-4 bg-[#375e21] text-white font-bold rounded-lg hover:bg-[#2d4f1b] transition-all shadow-lg hover:-translate-y-0.5 active:scale-95">
                 Shop the Collection
               </button>
               <button className="px-10 py-4 bg-[#bdd2ff] text-[#375e21] font-bold rounded-lg hover:bg-[#a6c1fb] transition-all shadow-md">
@@ -34,7 +34,7 @@ export default function Home() {
           <div className="flex-1 w-full max-w-2xl animate-in fade-in zoom-in duration-1000">
             <div className="grid grid-cols-12 gap-4">
               <div className="col-span-6 space-y-3">
-                <div className="aspect-[3/4] bg-[#f9f7f2] rounded-3xl overflow-hidden border-2 border-dashed border-[#375e21]/10 group hover:border-[#bdd2ff] transition-all relative">
+                <div className="aspect-3/4 bg-[#f9f7f2] rounded-3xl overflow-hidden border-2 border-dashed border-[#375e21]/10 group hover:border-[#bdd2ff] transition-all relative">
                    <Image 
                      src="/images/hero_ceramic.webp" 
                      alt="Artisan Ceramic" 
@@ -50,7 +50,7 @@ export default function Home() {
               
               <div className="col-span-6 space-y-6">
                 <div className="space-y-3">
-                  <div className="aspect-[5/3] bg-[#f9f7f2] rounded-3xl overflow-hidden border-2 border-dashed border-[#375e21]/10 group hover:border-[#bdd2ff] transition-all relative">
+                  <div className="aspect-5/3 bg-[#f9f7f2] rounded-3xl overflow-hidden border-2 border-dashed border-[#375e21]/10 group hover:border-[#bdd2ff] transition-all relative">
                     <Image 
                       src="/images/hero_wooden_bowl.webp" 
                       alt="Carved wooden bowl" 
@@ -115,12 +115,12 @@ export default function Home() {
               desc: "Secure shop of handcrafted conversation items." 
             }
           ].map((feature, i) => (
-            <div key={i} className="bg-white p-10 rounded-2xl text-center space-y-6 shadow-sm border border-gray-100 hover:shadow-md transition-all hover:translate-y-[-4px] group">
+            <div key={i} className="bg-white p-10 rounded-2xl text-center space-y-6 shadow-sm border border-gray-100 hover:shadow-md transition-all hover:-translate-y-1 group">
               <div className="inline-flex p-4 rounded-xl bg-[#375e21]/5 text-[#375e21] group-hover:bg-[#375e21] group-hover:text-white transition-all">
                 {feature.icon}
               </div>
               <h3 className="text-xl font-bold text-[#375e21] tracking-tight">{feature.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed max-w-[200px] mx-auto">{feature.desc}</p>
+              <p className="text-gray-500 text-sm leading-relaxed max-w-50 mx-auto">{feature.desc}</p>
             </div>
           ))}
         </div>
@@ -136,14 +136,14 @@ export default function Home() {
             Join our community of over 500+ independent artisans selling their handcrafted treasures.
           </p>
           <div className="pt-8">
-            <button className="bg-white text-[#375e21] px-12 py-4 rounded-xl font-extrabold hover:bg-[#bdd2ff] transition-all shadow-2xl hover:translate-y-[-2px] active:scale-95 text-lg">
+            <button className="bg-white text-[#375e21] px-12 py-4 rounded-xl font-extrabold hover:bg-[#bdd2ff] transition-all shadow-2xl hover:-translate-y-0.5 active:scale-95 text-lg">
               Start Selling Today
             </button>
           </div>
         </div>
         
-        <div className="absolute right-[-10%] bottom-[-30%] opacity-10 rotate-[-15deg] transition-transform hover:rotate-0 duration-[2000ms]">
-          <Hammer className="w-[600px] h-[600px] text-white" />
+        <div className="absolute right-[-10%] bottom-[-30%] opacity-10 rotate-[-15deg] transition-transform hover:rotate-0 duration-2000">
+          <Hammer className="w-150 h-150 text-white" />
         </div>
       </section>
 
@@ -159,7 +159,7 @@ export default function Home() {
           </div>
           
           <div className="flex flex-col md:flex-row items-center gap-12">
-            <div className="flex gap-6 text-[#375e21]/40 text-[10px] font-bold uppercase tracking-[0.25em] lg:pl-12 lg:border-l border-gray-100 hidden lg:flex">
+            <div className="gap-6 text-[#375e21]/40 text-[10px] font-bold uppercase tracking-[0.25em] lg:pl-12 lg:border-l border-gray-100 hidden lg:flex">
                <a href="#" className="hover:text-[#375e21] transition-colors">Privacy</a>
                <a href="#" className="hover:text-[#375e21] transition-colors">Terms</a>
                <a href="#" className="hover:text-[#375e21] transition-colors">Legal</a>

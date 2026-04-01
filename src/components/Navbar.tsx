@@ -11,19 +11,19 @@ export default function Navbar() {
     <header className="w-full">
       <div className="bg-[#375e21] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-[56px] gap-4">
-            <Link href="/" className="flex items-center gap-2 flex-shrink-0 group">
+          <div className="flex justify-between items-center h-14 gap-4">
+            <Link href="/" className="flex items-center gap-2 shrink-0 group">
               <div className="text-[#bdd2ff] font-bold text-xl tracking-tight transition-transform group-hover:scale-105">
                 Handcrafted Haven
               </div>
             </Link>
 
-            <div className="flex-grow max-w-2xl hidden md:flex">
+            <div className="grow max-w-2xl hidden md:flex">
               <div className="flex w-full group overflow-hidden rounded-md bg-white border-2 border-transparent focus-within:border-[#bdd2ff] transition-all">
                 <input
                   type="text"
                   placeholder="Search handcrafted items..."
-                  className="flex-grow px-4 py-2 text-sm text-[#333] outline-none"
+                  className="grow px-4 py-2 text-sm text-[#333] outline-none"
                 />
                 <button className="bg-[#bdd2ff] text-[#375e21] px-6 flex items-center justify-center hover:bg-[#a6c1fb] transition-colors">
                   <Search className="w-4 h-4" />
@@ -81,7 +81,7 @@ export default function Navbar() {
 
       <nav className="bg-[#2d4f1b] border-t border-black/5 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-6 h-[32px] overflow-x-auto no-scrollbar">
+          <div className="flex items-center gap-6 h-8 overflow-x-auto no-scrollbar">
             {["All Categories", "Jewelry", "Woodwork", "Pottery", "Textiles", "Paintings", "Home Decor", "Artisans", "About"].map((label) => (
               <a 
                 key={label} 
