@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getSellerById } from "@/data/sellers";
+import { getProfile, getSellerProducts } from "@/lib/supabase/queries";
 import { formatUsd } from "@/lib/format-money";
 
 type PageProps = {
@@ -11,23 +11,32 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { sellerId } = await params;
-  const seller = getSellerById(sellerId);
-  if (!seller) {
+  try {
+    const seller = await getProfile(sellerId);
+    return {
+      title: `${seller.full_name || 'Artisan'} · Seller profile · Handcrafted Haven`,
+      description: seller.bio || `Explore unique creations from ${seller.full_name}`,
+    };
+  } catch {
     return { title: "Seller not found · Handcrafted Haven" };
   }
-  return {
-    title: `${seller.displayName} · Seller profile · Handcrafted Haven`,
-    description: `${seller.tagline} ${seller.story.slice(0, 140)}…`,
-  };
 }
 
 export default async function SellerProfilePage({ params }: PageProps) {
   const { sellerId } = await params;
-  const seller = getSellerById(sellerId);
-  if (!seller) notFound();
+  
+  let seller;
+  let products;
+  
+  try {
+    seller = await getProfile(sellerId);
+    products = await getSellerProducts(sellerId);
+  } catch {
+    notFound();
+  }
 
   return (
-    <div className="min-h-screen bg-[#e3e6e6] text-neutral-900">
+    <div className="min-h-screen bg-[#fdfbf7] text-neutral-900">
       <a
         href="#profile-main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-[#375e21] focus:px-3 focus:py-2 focus:text-white focus:outline-none focus:ring-2 focus:ring-[#bdd2ff]"
@@ -40,93 +49,90 @@ export default async function SellerProfilePage({ params }: PageProps) {
         className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8"
       >
         <header className="mb-10 flex flex-col gap-6 border-b border-neutral-300 pb-10 sm:flex-row sm:items-start">
-          <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-full border-4 border-white shadow-md ring-1 ring-neutral-200">
-            <Image
-              src={seller.avatarSrc}
-              alt={seller.avatarAlt}
-              fill
-              className="object-cover"
-              sizes="128px"
-              priority
-            />
+          <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-full border-4 border-white shadow-md ring-1 ring-neutral-200 bg-gray-100">
+            {seller.avatar_url && (
+              <Image
+                src={seller.avatar_url}
+                alt={seller.full_name || 'Artisan'}
+                fill
+                className="object-cover"
+                sizes="128px"
+                priority
+              />
+            )}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-[#375e21]">Seller profile</p>
+            <p className="text-sm font-medium text-[#375e21] uppercase tracking-widest text-[10px]">Artisan Profile</p>
             <h1 className="mt-1 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
-              {seller.displayName}
+              {seller.full_name || 'Anonymous Artisan'}
             </h1>
-            <p className="mt-2 max-w-2xl text-lg text-neutral-700">
-              {seller.tagline}
+            <p className="mt-2 max-w-2xl text-lg text-neutral-700 font-medium">
+              {seller.bio}
             </p>
-            <dl className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-neutral-600">
-              <div>
-                <dt className="sr-only">Location</dt>
-                <dd>{seller.location}</dd>
-              </div>
-              <div>
-                <dt className="sr-only">Member since</dt>
-                <dd>Member since {seller.memberSince}</dd>
-              </div>
-            </dl>
+            {seller.username && (
+              <p className="mt-1 text-sm text-gray-400 font-mono">@{seller.username}</p>
+            )}
           </div>
         </header>
 
         <section
-          className="mb-12"
+          className="mb-12 bg-white p-8 rounded-3xl border border-gray-100 shadow-sm"
           aria-labelledby="about-heading"
         >
           <h2
             id="about-heading"
-            className="text-xl font-semibold text-[#2d4f1b]"
+            className="text-xl font-bold text-[#375e21]"
           >
             Story &amp; craft
           </h2>
-          <p className="mt-3 max-w-3xl leading-relaxed text-neutral-800">
-            {seller.story}
+          <p className="mt-3 max-w-3xl leading-relaxed text-neutral-800 whitespace-pre-wrap">
+            {seller.craft_story || 'This artisan is still crafting their story. Check back soon!'}
           </p>
         </section>
 
         <section aria-labelledby="shop-heading">
-          <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <h2
               id="shop-heading"
-              className="text-xl font-semibold text-[#2d4f1b]"
+              className="text-2xl font-bold text-[#375e21]"
             >
               Handcrafted items
             </h2>
-            <p className="text-sm text-neutral-600">
-              {seller.products.length}{" "}
-              {seller.products.length === 1 ? "listing" : "listings"}
+            <p className="text-sm font-bold text-gray-300">
+              {products.length}{" "}
+              {products.length === 1 ? "listing" : "listings"}
             </p>
           </div>
 
           <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {seller.products.map((product) => (
+            {products.map((product) => (
               <li key={product.id}>
-                <article className="flex h-full flex-col overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-md">
+                <article className="group h-full flex flex-col overflow-hidden rounded-2xl border border-neutral-100 bg-white shadow-sm transition-all hover:shadow-xl hover:-translate-y-1">
                   <Link
                     href={`/products/${product.id}`}
-                    className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#375e21] focus-visible:ring-offset-2"
+                    className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#375e21] focus-visible:ring-offset-2"
                   >
                     <div className="relative aspect-square w-full bg-neutral-100">
-                      <Image
-                        src={product.imageSrc}
-                        alt={product.imageAlt}
-                        fill
-                        className="object-cover transition group-hover:opacity-95"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      />
+                      {product.image_url && (
+                        <Image
+                          src={product.image_url}
+                          alt={product.name}
+                          fill
+                          className="object-cover transition group-hover:opacity-95"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
+                      )}
                     </div>
-                    <div className="flex flex-1 flex-col p-4">
-                      <h3 className="text-lg font-semibold text-neutral-900 group-hover:text-[#375e21]">
-                        {product.title}
+                    <div className="flex flex-1 flex-col p-6">
+                      <h3 className="text-lg font-bold text-[#375e21] group-hover:text-[#2d4f1b]">
+                        {product.name}
                       </h3>
-                      <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-neutral-600">
+                      <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-gray-500">
                         {product.description}
                       </p>
-                      <p className="mt-auto pt-4 text-base font-semibold text-[#2d4f1b]">
-                        <span className="sr-only">Price </span>
-                        {formatUsd(product.priceCents)}
+                      <p className="mt-6 pt-4 border-t border-gray-50 text-base font-bold text-[#375e21] flex justify-between items-center">
+                        <span className="text-gray-300 text-[10px] uppercase tracking-widest font-bold">Price</span>
+                        {formatUsd(product.price)}
                       </p>
                     </div>
                   </Link>
