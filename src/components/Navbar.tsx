@@ -37,7 +37,7 @@ export default function Navbar() {
                   {user ? (
                     <div className="flex items-center gap-6">
                       <Link 
-                        href="/profile" 
+                        href="/settings" 
                         className="flex items-center gap-2 text-white hover:text-[#bdd2ff] transition-colors"
                       >
                         <UserIcon className="w-4 h-4" />
@@ -46,7 +46,7 @@ export default function Navbar() {
                       
                       {profile?.role === 'seller' && (
                         <Link 
-                          href="/profile" 
+                          href="/dashboard/products" 
                           className="px-3 py-1 bg-white/10 rounded-md hover:bg-white/20 transition-colors"
                         >
                           Seller Hub

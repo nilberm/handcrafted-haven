@@ -20,3 +20,7 @@ export interface Product {
   image_url: string | null;
   created_at: string;
 }
+
+export interface ProductWithSeller extends Product {
+  profiles: Profile;
+}
