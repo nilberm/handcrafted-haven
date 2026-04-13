@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createProduct, uploadImage } from '@/lib/supabase/queries'
+import { createProduct, updateProduct, uploadImage } from '@/lib/supabase/queries'
 import { Product } from '@/types/database'
 import { ImagePlus, Loader2, X } from 'lucide-react'
 import Image from 'next/image'
@@ -56,8 +56,12 @@ export default function ProductForm({ sellerId, initialData, onSuccess }: Produc
         image_url: imageUrl,
       }
 
-      await createProduct(productData)
-      
+      if (initialData) {
+        await updateProduct(initialData.id, productData)
+      } else {
+        await createProduct(productData)
+      }
+
       if (onSuccess) {
         onSuccess()
       } else {

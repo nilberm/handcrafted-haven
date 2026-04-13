@@ -59,6 +59,27 @@ export async function createProduct(product: Omit<Product, 'id' | 'created_at'>)
   return data as Product
 }
 
+export async function deleteProduct(productId: string) {
+  const { error } = await supabase
+    .from('products')
+    .delete()
+    .eq('id', productId)
+
+  if (error) throw error
+}
+
+export async function updateProduct(productId: string, product: Partial<Omit<Product, 'id' | 'created_at'>>) {
+  const { data, error } = await supabase
+    .from('products')
+    .update(product)
+    .eq('id', productId)
+    .select()
+    .single()
+
+  if (error) throw error
+  return data as Product
+}
+
 export async function uploadImage(file: File, path: string) {
   const fileExt = file.name.split('.').pop()
   const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`

@@ -1,12 +1,11 @@
 'use client'
 
 import { useState, Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { useSearchParams } from 'next/navigation'
 import { Hammer, User, Mail, Lock, ShieldCheck, ArrowRight, Loader2 } from 'lucide-react'
+import { signIn, signUp } from './actions'
 
 function LoginContent() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const isSignupParam = searchParams.get('signup') === 'true'
   
@@ -19,8 +18,6 @@ function LoginContent() {
   const [error, setError] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
 
-  const supabase = createClient()
-
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -29,26 +26,16 @@ function LoginContent() {
 
     try {
       if (isSignup) {
-        const { error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              full_name: fullName,
-              role: role,
-            },
-          },
-        })
-        if (signUpError) throw signUpError
-        setMessage('Check your email to confirm your account!')
+        const result = await signUp(email, password, fullName, role)
+        if (result?.error) setError(result.error)
+        else setMessage(result?.message ?? 'Check your email to confirm your account!')
       } else {
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        })
-        if (signInError) throw signInError
-        router.push('/')
-        router.refresh()
+        const result = await signIn(email, password)
+        if (result?.error) {
+          setError(result.error)
+        } else {
+          window.location.href = '/'
+        }
       }
     } catch (err: any) {
       setError(err.message)

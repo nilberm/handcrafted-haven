@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/AuthProvider'
-import { getSellerProducts } from '@/lib/supabase/queries'
+import { getSellerProducts, deleteProduct } from '@/lib/supabase/queries'
 import { Product } from '@/types/database'
-import { ShoppingBag, Plus, Loader2, Package, Search, LayoutGrid, List } from 'lucide-react'
+import { ShoppingBag, Plus, Loader2, Package, Pencil, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import ProductForm from '@/components/ProductForm'
@@ -16,6 +16,7 @@ export default function ProductsDashboard() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [showAddForm, setShowAddForm] = useState(false)
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null)
 
   useEffect(() => {
     async function fetchProducts() {
@@ -44,10 +45,21 @@ export default function ProductsDashboard() {
     return null
   }
 
+  const handleDelete = async (productId: string) => {
+    if (!confirm('¿Seguro que quieres eliminar este producto?')) return
+    try {
+      await deleteProduct(productId)
+      setProducts((prev) => prev.filter((p) => p.id !== productId))
+    } catch (error) {
+      console.error('Error deleting product:', error)
+      alert('Failed to delete product. Please try again.')
+    }
+  }
+
   const handleSuccess = () => {
     setShowAddForm(false)
+    setEditingProduct(null)
     router.refresh()
-    // Re-fetch products
     getSellerProducts(user.id).then(setProducts)
   }
 
@@ -64,10 +76,13 @@ export default function ProductsDashboard() {
           </div>
           
           <button
-            onClick={() => setShowAddForm(!showAddForm)}
+            onClick={() => {
+              setShowAddForm(!showAddForm)
+              setEditingProduct(null)
+            }}
             className="flex items-center justify-center gap-2 px-6 py-3 bg-[#375e21] text-white font-bold rounded-xl hover:bg-[#2d4f1b] transition-all shadow-lg hover:-translate-y-0.5 active:scale-95"
           >
-            {showAddForm ? 'View Inventory' : (
+            {(showAddForm || editingProduct) ? 'View Inventory' : (
               <>
                 <Plus className="w-5 h-5" />
                 List New Item
@@ -76,10 +91,16 @@ export default function ProductsDashboard() {
           </button>
         </div>
 
-        {showAddForm ? (
+        {showAddForm || editingProduct ? (
           <div className="max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4">
-            <h2 className="text-2xl font-bold text-[#375e21] mb-6">New Craft Piece</h2>
-            <ProductForm sellerId={user.id} onSuccess={handleSuccess} />
+            <h2 className="text-2xl font-bold text-[#375e21] mb-6">
+              {editingProduct ? 'Edit Product' : 'New Craft Piece'}
+            </h2>
+            <ProductForm
+              sellerId={user.id}
+              initialData={editingProduct ?? undefined}
+              onSuccess={handleSuccess}
+            />
           </div>
         ) : (
           <div className="space-y-8 animate-in fade-in duration-500">
@@ -125,12 +146,28 @@ export default function ProductsDashboard() {
                            <div className="text-[10px] text-gray-300 font-bold uppercase tracking-widest">
                              Listed {new Date(product.created_at).toLocaleDateString()}
                            </div>
-                           <Link 
-                            href={`/profile/${user.id}`}
-                            className="text-[#375e21] text-xs font-bold hover:underline decoration-dotted"
-                           >
-                            View Live
-                           </Link>
+                           <div className="flex items-center gap-3">
+                             <button
+                               onClick={() => setEditingProduct(product)}
+                               className="flex items-center gap-1 text-[#375e21] text-xs font-bold hover:underline decoration-dotted"
+                             >
+                               <Pencil className="w-3 h-3" />
+                               Edit
+                             </button>
+                             <button
+                               onClick={() => handleDelete(product.id)}
+                               className="flex items-center gap-1 text-red-400 text-xs font-bold hover:underline decoration-dotted"
+                             >
+                               <Trash2 className="w-3 h-3" />
+                               Delete
+                             </button>
+                             <Link
+                               href={`/profile/${user.id}`}
+                               className="text-[#375e21] text-xs font-bold hover:underline decoration-dotted"
+                             >
+                               View Live
+                             </Link>
+                           </div>
                         </div>
                     </div>
                   </div>
