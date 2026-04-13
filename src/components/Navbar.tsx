@@ -32,48 +32,44 @@ export default function Navbar() {
             </div>
 
             <div className="flex items-center gap-4 text-sm font-medium">
-              {!loading && (
-                <>
-                  {user ? (
-                    <div className="flex items-center gap-6">
-                      <Link 
-                        href="/settings" 
-                        className="flex items-center gap-2 text-white hover:text-[#bdd2ff] transition-colors"
-                      >
-                        <UserIcon className="w-4 h-4" />
-                        <span>{profile?.full_name || 'My Profile'}</span>
-                      </Link>
-                      
-                      {profile?.role === 'seller' && (
-                        <Link 
-                          href="/dashboard/products" 
-                          className="px-3 py-1 bg-white/10 rounded-md hover:bg-white/20 transition-colors"
-                        >
-                          Seller Hub
-                        </Link>
-                      )}
-
-                      <button
-                        onClick={() => signOut()}
-                        className="text-white/70 hover:text-red-300 transition-colors"
-                        title="Sign Out"
-                      >
-                        <LogOut className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex gap-4">
-                      <Link href="/login" className="hover:text-[#bdd2ff] transition-colors">Sign In</Link>
-                      <Link href="/login?signup=true" className="text-[#bdd2ff] hover:text-white transition-colors">Join as Artisan</Link>
-                    </div>
-                  )}
-                  
-                  <Link href="/cart" className="flex items-center gap-1 hover:text-[#bdd2ff] transition-colors ml-2">
-                    <ShoppingCart className="w-5 h-5" />
-                    <span>Cart</span>
+              {!loading && user ? (
+                <div className="flex items-center gap-6">
+                  <Link
+                    href="/settings"
+                    className="flex items-center gap-2 text-white hover:text-[#bdd2ff] transition-colors"
+                  >
+                    <UserIcon className="w-4 h-4" />
+                    <span>{profile?.full_name || 'My Profile'}</span>
                   </Link>
-                </>
+
+                  {profile?.role === 'seller' && (
+                    <Link
+                      href="/dashboard/products"
+                      className="px-3 py-1 bg-white/10 rounded-md hover:bg-white/20 transition-colors"
+                    >
+                      Seller Hub
+                    </Link>
+                  )}
+
+                  <button
+                    onClick={() => signOut()}
+                    className="text-white/70 hover:text-red-300 transition-colors"
+                    title="Sign Out"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-4">
+                  <Link href="/login" className="hover:text-[#bdd2ff] transition-colors">Sign In</Link>
+                  <Link href="/login?signup=true" className="text-[#bdd2ff] hover:text-white transition-colors">Join as Artisan</Link>
+                </div>
               )}
+
+              <Link href="/cart" className="flex items-center gap-1 hover:text-[#bdd2ff] transition-colors ml-2">
+                <ShoppingCart className="w-5 h-5" />
+                <span>Cart</span>
+              </Link>
             </div>
           </div>
         </div>
