@@ -5,7 +5,8 @@ import { notFound } from "next/navigation";
 import { AddToCart } from "@/components/add-to-cart";
 import { ProductGallery } from "@/components/product-gallery";
 import { ProductReviewSection } from "@/components/product-review-section";
-import { getReviewsForProduct } from "@/data/product-reviews";
+import { getReviewsForProduct } from "@/lib/supabase/reviews";
+import { createClient } from "@/lib/supabase/server";
 import { getProduct } from "@/lib/supabase/queries";
 import { formatUsd } from "@/lib/format-money";
 import { ProductWithSeller } from "@/types/database";
@@ -41,7 +42,12 @@ export default async function ProductPage({ params }: PageProps) {
   const galleryImages = [
     { src: product.image_url || '', alt: product.name },
   ];
-  const initialReviews = getReviewsForProduct(product.id);
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const initialReviews = await getReviewsForProduct(product.id);
 
   return (
     <div className="min-h-screen bg-[#fdfbf7] text-neutral-900">
@@ -122,7 +128,11 @@ export default async function ProductPage({ params }: PageProps) {
         </div>
 
         <div className="mt-24 border-t border-gray-100 pt-16">
-          <ProductReviewSection productId={product.id} initialReviews={initialReviews} />
+          <ProductReviewSection
+            productId={product.id}
+            initialReviews={initialReviews}
+            currentUserId={user?.id ?? null}
+          />
         </div>
       </main>
     </div>
