@@ -23,6 +23,7 @@ export default function ProductForm({ sellerId, initialData, onSuccess }: Produc
     name: initialData?.name || '',
     description: initialData?.description || '',
     price: initialData ? (initialData.price / 100).toString() : '',
+    category: initialData?.category || 'Jewelry',
   })
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +55,7 @@ export default function ProductForm({ sellerId, initialData, onSuccess }: Produc
         description: formData.description,
         price: Math.round(parseFloat(formData.price) * 100),
         image_url: imageUrl,
+        category: formData.category,
       }
 
       if (initialData) {
@@ -131,6 +133,23 @@ export default function ProductForm({ sellerId, initialData, onSuccess }: Produc
                 onChange={(e) => setFormData({ ...formData, price: e.target.value })}
               />
             </div>
+          </div>
+
+          <div>
+            <label htmlFor="category" className="block text-sm font-bold text-[#375e21] mb-1">Category</label>
+            <select
+              id="category"
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[#375e21]/20 focus:border-[#375e21] outline-none transition-all bg-white"
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            >
+              <option value="Jewelry">Jewelry</option>
+              <option value="Woodwork">Woodwork</option>
+              <option value="Pottery">Pottery</option>
+              <option value="Textiles">Textiles</option>
+              <option value="Paintings">Paintings</option>
+              <option value="Home Decor">Home Decor</option>
+            </select>
           </div>
         </div>
 
