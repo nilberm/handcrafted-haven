@@ -36,10 +36,13 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith('/login') &&
     !request.nextUrl.pathname.startsWith('/auth') &&
     !request.nextUrl.pathname.startsWith('/api') &&
+    !request.nextUrl.pathname.startsWith('/products') &&
+    !request.nextUrl.pathname.startsWith('/artisans') &&
+    !request.nextUrl.pathname.startsWith('/profile') &&
     request.nextUrl.pathname !== '/'
   ) {
     const url = request.nextUrl.clone()
-    url.pathname = '/auth/login'
+    url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
