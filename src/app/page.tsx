@@ -2,6 +2,7 @@
 
 import { Hammer, ShoppingBag, Zap, User as UserIcon, ShieldCheck } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -22,12 +23,16 @@ export default function Home() {
               Support independent artisans and find one-of-a-kind items made with passion and precision.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
-              <button className="px-10 py-4 bg-[#375e21] text-white font-bold rounded-lg hover:bg-[#2d4f1b] transition-all shadow-lg hover:-translate-y-0.5 active:scale-95">
-                Shop the Collection
-              </button>
-              <button className="px-10 py-4 bg-[#bdd2ff] text-[#375e21] font-bold rounded-lg hover:bg-[#a6c1fb] transition-all shadow-md">
-                Meet the Artisans
-              </button>
+              <Link href="/products">
+                <button className="px-10 py-4 bg-[#375e21] text-white font-bold rounded-lg hover:bg-[#2d4f1b] transition-all shadow-lg hover:-translate-y-0.5 active:scale-95">
+                  Shop the Collection
+                </button>
+              </Link>
+              <Link href="/artisans">
+                <button className="px-10 py-4 bg-[#bdd2ff] text-[#375e21] font-bold rounded-lg hover:bg-[#a6c1fb] transition-all shadow-md">
+                  Meet the Artisans
+                </button>
+              </Link>
             </div>
           </div>
           

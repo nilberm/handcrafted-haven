@@ -37,6 +37,30 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 Team 06: W02 Assignment: Team Project
 
-Bruce Melendez Lozano,
-Nilber Moreira Mota,
-Eric Ferreira
+**Members:**
+- Bruce Melendez Lozano
+- Nilber Moreira Mota
+- Eric Ferreira
+
+---
+
+## 📝 Submission Requirements
+
+> [!IMPORTANT]
+> **Final URLs for Submission:**
+> - **Rendered Application:** [https://handcrafted-haven.vercel.app](https://handcrafted-haven.vercel.app) (Update with your actual Vercel URL)
+> - **GitHub Project Board:** [https://github.com/users/nilberm/projects/2](https://github.com/users/nilberm/projects/2)
+> - **GitHub Repository:** [https://github.com/nilberm/handcrafted-haven](https://github.com/nilberm/handcrafted-haven)
+> - **Demonstration Video:** [URL to Video] (Update with your group video link)
+
+---
+
+## ✅ Feature Checklist
+
+- [x] **Seller Profiles**: Dedicated profiles showing craftsmanship and stories.
+- [x] **Product Listings**: Artisans can list items with descriptions and prices.
+- [x] **Product Catalog**: Browsable grid with filtering by category and price.
+- [x] **Reviews & Ratings**: Users can leave feedback and star ratings.
+- [x] **Responsive Design**: Mobile-friendly interface.
+- [x] **Accessibility (WCAG 2.1 AA)**: Semantic HTML and ARIA labels implemented.
+- [x] **SEO**: Unique metadata for each page.

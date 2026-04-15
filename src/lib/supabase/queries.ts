@@ -1,5 +1,5 @@
 import { createClient } from './client'
-import { Profile, Product } from '@/types/database'
+import { Profile, Product, ProductWithSeller } from '@/types/database'
 
 const supabase = createClient()
 
@@ -35,6 +35,33 @@ export async function getSellerProducts(sellerId: string) {
   
   if (error) throw error
   return data as Product[]
+}
+
+export async function getProducts(filters: { category?: string; minPrice?: number; maxPrice?: number; search?: string } = {}) {
+  let query = supabase
+    .from('products')
+    .select('*, profiles(full_name)')
+
+  if (filters.category && filters.category !== 'All') {
+    query = query.eq('category', filters.category)
+  }
+
+  if (filters.minPrice != null) {
+    query = query.gte('price', filters.minPrice)
+  }
+
+  if (filters.maxPrice != null) {
+    query = query.lte('price', filters.maxPrice)
+  }
+
+  if (filters.search) {
+    query = query.ilike('name', `%${filters.search}%`)
+  }
+
+  const { data, error } = await query.order('created_at', { ascending: false })
+
+  if (error) throw error
+  return data as ProductWithSeller[]
 }
 
 export async function getProduct(productId: string) {
@@ -78,6 +105,17 @@ export async function updateProduct(productId: string, product: Partial<Omit<Pro
 
   if (error) throw error
   return data as Product
+}
+
+export async function getSellersWithProducts() {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*, products(*)')
+    .eq('role', 'seller')
+    .order('full_name')
+
+  if (error) throw error
+  return data as (Profile & { products: Product[] })[]
 }
 
 export async function uploadImage(file: File, path: string) {

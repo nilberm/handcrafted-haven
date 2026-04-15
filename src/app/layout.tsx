@@ -32,12 +32,20 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased selection:bg-emerald-500/30`}
       >
         <AuthProvider>
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="grow">
-              {children}
-            </main>
-          </div>
+          <Providers>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-[#375e21] focus:px-3 focus:py-2 focus:text-white focus:outline-none focus:ring-2 focus:ring-[#bdd2ff]"
+            >
+              Skip to main content
+            </a>
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <main id="main-content" className="grow outline-none" tabIndex={-1}>
+                {children}
+              </main>
+            </div>
+          </Providers>
         </AuthProvider>
       </body>
     </html>
