@@ -48,10 +48,10 @@ Team 06: W02 Assignment: Team Project
 
 > [!IMPORTANT]
 > **Final URLs for Submission:**
-> - **Rendered Application:** [https://handcrafted-haven.vercel.app](https://handcrafted-haven.vercel.app) (Update with your actual Vercel URL)
+> - **Rendered Application:** [https://handcrafted-haven.vercel.app](https://handcrafted-haven.vercel.app)
 > - **GitHub Project Board:** [https://github.com/users/nilberm/projects/2](https://github.com/users/nilberm/projects/2)
 > - **GitHub Repository:** [https://github.com/nilberm/handcrafted-haven](https://github.com/nilberm/handcrafted-haven)
-> - **Demonstration Video:** [URL to Video] (Update with your group video link)
+> - **Demonstration Video:** [URL to Video]
 
 ---
 
@@ -63,4 +63,4 @@ Team 06: W02 Assignment: Team Project
 - [x] **Reviews & Ratings**: Users can leave feedback and star ratings.
 - [x] **Responsive Design**: Mobile-friendly interface.
 - [x] **Accessibility (WCAG 2.1 AA)**: Semantic HTML and ARIA labels implemented.
-- [x] **SEO**: Unique metadata for each page.
+- [x] **SEO**: Unique metadata for each page.
