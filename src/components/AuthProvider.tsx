@@ -1,7 +1,6 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { type User } from '@supabase/supabase-js'
 import { Profile } from '@/types/database'
 
@@ -25,45 +24,24 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   const [user, setUser] = useState<User | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
-  const supabase = createClient()
 
   useEffect(() => {
-    const fetchProfile = async (userId: string) => {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single()
-
-      if (data) {
-        setProfile(data)
-      } else if (error) {
-        console.error('Error fetching profile:', error.message)
-      }
-    }
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        const currentUser = session?.user ?? null
-        setUser(currentUser)
-        
-        if (currentUser) {
-          await fetchProfile(currentUser.id)
-        } else {
-          setProfile(null)
-        }
-        
-        setLoading(false)
-      }
-    )
-
-    return () => {
-      subscription.unsubscribe()
-    }
-  }, [supabase])
+    fetch('/api/auth/user')
+      .then(res => res.json())
+      .then(data => {
+        setUser(data.user)
+        setProfile(data.profile)
+      })
+      .catch(() => {
+        setUser(null)
+        setProfile(null)
+      })
+      .finally(() => setLoading(false))
+  }, [])
 
   const signOut = async () => {
-    await supabase.auth.signOut()
+    await fetch('/api/auth/signout', { method: 'POST' })
+    window.location.href = '/login'
   }
 
   return (

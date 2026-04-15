@@ -77,7 +77,7 @@ export default function ProductsDashboard() {
           
           <button
             onClick={() => {
-              setShowAddForm(!showAddForm)
+              setShowAddForm(showAddForm ? false : !editingProduct)
               setEditingProduct(null)
             }}
             className="flex items-center justify-center gap-2 px-6 py-3 bg-[#375e21] text-white font-bold rounded-xl hover:bg-[#2d4f1b] transition-all shadow-lg hover:-translate-y-0.5 active:scale-95"
