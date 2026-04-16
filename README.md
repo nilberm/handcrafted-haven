@@ -48,7 +48,7 @@ Team 06: W02 Assignment: Team Project
 
 > [!IMPORTANT]
 > **Final URLs for Submission:**
-> - **Rendered Application:** [https://handcrafted-haven.vercel.app](https://handcrafted-haven.vercel.app)
+> - **Rendered Application:** [https://handcrafted-haven-tan-rho.vercel.app/](https://handcrafted-haven-tan-rho.vercel.app/)
 > - **GitHub Project Board:** [https://github.com/users/nilberm/projects/2](https://github.com/users/nilberm/projects/2)
 > - **GitHub Repository:** [https://github.com/nilberm/handcrafted-haven](https://github.com/nilberm/handcrafted-haven)
 > - **Demonstration Video:** [URL to Video]
